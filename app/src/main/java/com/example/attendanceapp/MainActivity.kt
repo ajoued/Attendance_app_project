@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -21,31 +22,49 @@ class MainActivity : ComponentActivity() {
         setContent {
             AttendanceAppTheme {
                 // A surface container using the 'background' color from the theme
+                installSplashScreen()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController ,
-                        startDestination = "home"
+                        startDestination = "1"
                     ){
-                        composable("home"){
+                        composable("1"){
                             Houmepg(navController=navController)
                         }
-                        composable("secende"){
+                        composable("2"){
                             MangeGr(navController=navController)
                         }
-                        composable("therd"){
+                        composable("3"){
                             RecordAttd(navController=navController)
                         }
-                        composable("forth"){
+                        composable("4"){
                             ManageAttendace(navController=navController)
                         }
-                        composable("fifth"){
+                        composable("5"){
                             AttendanceHistory(navController=navController)
                         }
 
+
+                        composable("6"){
+                            RecordAttd(navController=navController)
+                        }
+                        composable("7"){
+                            AttendanceHistory(navController=navController)
+                        }
+                        composable("8"){
+                            TakeAttn(navController=navController)
+                        }
+                        composable("9"){
+                            HistorySession(navController=navController)
+                        }
+                        composable("10"){
+                            HistoryStudent(navController=navController)
+                        }
                     }
                 }
             }
@@ -59,7 +78,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     AttendanceAppTheme {
-        
-
+    
     }
 }

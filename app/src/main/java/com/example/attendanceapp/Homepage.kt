@@ -56,7 +56,7 @@ fun Houmepg(navController : NavHostController , modifier: Modifier = Modifier) {
         ){
             Column() {
                 Button(
-                    onClick = { navController.navigate("secende") } ,
+                    onClick = { navController.navigate("2") } ,
                     shape = RoundedCornerShape(5.dp) ,
                     modifier = modifier
                         .width(250.dp)
@@ -77,11 +77,11 @@ fun Houmepg(navController : NavHostController , modifier: Modifier = Modifier) {
                     )
                 }
 
-                Spacer(modifier = modifier.height(20.dp))
+                Spacer(modifier = modifier.height(35.dp))
 
                 Button(
                     onClick = {
-                        navController.navigate("forth")
+                        navController.navigate("4")
                     } ,
                     shape = RoundedCornerShape(5.dp) ,
                     modifier = modifier

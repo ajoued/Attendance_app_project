@@ -3,4 +3,10 @@
     <string name="title_activity_homepage">Homepage</string>
     <string name="title_activity_secend_page">SecendPage</string>
     <string name="title_activity_fifth_page">FifthPage</string>
+    <string name="title_activity_manage_groupe_page1">ManageGroupePage1</string>
+    <string name="title_activity_taking_attendance">TakingAttendance</string>
+    <string name="title_activity_history_per_session">HistoryPerSession</string>
+    <string name="title_activity_history_per_session2">HistoryPerSession2</string>
+    <string name="title_activity_history_per_student">HistoryPerStudent</string>
+    <string name="title_activity_history_per_student2">HistoryPerStudent2</string>
 </resources>

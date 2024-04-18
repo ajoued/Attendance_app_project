@@ -62,13 +62,13 @@ fun RecordAttd(navController : NavHostController , modifier: Modifier = Modifier
                     Spacer(modifier = modifier.width(10.dp))
 
                     Text(
-                        text = "Select Group" ,
+                        text = "Session Date " ,
                         fontSize = 21.sp ,
                         fontWeight = FontWeight.Bold
                     )
                 }
 
-                Spacer(modifier = modifier.height(20.dp))
+                Spacer(modifier = modifier.height(35.dp))
 
                 Button(
                     onClick = { /*TODO*/ } ,
@@ -86,7 +86,7 @@ fun RecordAttd(navController : NavHostController , modifier: Modifier = Modifier
                     Spacer(modifier = modifier.width(10.dp))
 
                     Text(
-                        text = "Session Date" ,
+                        text = "Select Group" ,
                         fontSize = 21.sp ,
                         fontWeight = FontWeight.Bold
                     )
@@ -111,7 +111,9 @@ fun RecordAttd(navController : NavHostController , modifier: Modifier = Modifier
             contentAlignment = Alignment.BottomCenter
         ){
             Button(
-                onClick = { /*TODO*/ } ,
+                onClick = {
+                    navController.navigate("8")
+                } ,
 
                 shape = RoundedCornerShape(5.dp) ,
                 modifier = modifier

@@ -50,7 +50,9 @@ fun ManageAttendace (navController : NavHostController , modifier: Modifier = Mo
         ){
             Column {
                 Button(
-                    onClick = { /*TODO*/ } ,
+                    onClick = {
+                        navController.navigate("6")
+                    } ,
                     shape = RoundedCornerShape(5.dp) ,
                     modifier = modifier
                         .width(250.dp)
@@ -74,7 +76,9 @@ fun ManageAttendace (navController : NavHostController , modifier: Modifier = Mo
                 Spacer(modifier = modifier.height(35.dp))
 
                 Button(
-                    onClick = { /*TODO*/ } ,
+                    onClick = {
+                        navController.navigate("7")
+                    } ,
                     shape = RoundedCornerShape(5.dp) ,
                     modifier = modifier
                         .width(250.dp)
@@ -89,7 +93,7 @@ fun ManageAttendace (navController : NavHostController , modifier: Modifier = Mo
                     Spacer(modifier = modifier.width(10.dp))
 
                     Text(
-                        text = "Manage attendance" ,
+                        text = "Attendance History" ,
                         fontSize = 21.sp ,
                         fontWeight = FontWeight.Bold
                     )

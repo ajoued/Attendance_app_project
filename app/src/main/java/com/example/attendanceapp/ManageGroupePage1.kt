@@ -1,8 +1,8 @@
 package com.example.attendanceapp
 
+
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -29,9 +28,9 @@ import androidx.navigation.NavHostController
 
 
 @Composable
-fun MangeGr (navController : NavHostController , modifier: Modifier = Modifier) {
+fun PageGroupe( navController : NavHostController ,modifier: Modifier = Modifier) {
     Scaffold(
-        topBar = { TopAppBar("Manage Groups") }
+        topBar = { TopAppBar("Manage Group 1") }
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -45,8 +44,9 @@ fun MangeGr (navController : NavHostController , modifier: Modifier = Modifier) 
             contentAlignment = Alignment.Center
         ) {
 
+
         }
-         Spacer(modifier = modifier.height(20.dp))
+        Spacer(modifier = modifier.height(20.dp))
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -63,7 +63,7 @@ fun MangeGr (navController : NavHostController , modifier: Modifier = Modifier) 
         ){
             Column {
                 Text(
-                    text = " Hold to change group name" ,
+                    text = " Hold to change student name" ,
                     fontSize = 17.sp ,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
@@ -82,7 +82,7 @@ fun MangeGr (navController : NavHostController , modifier: Modifier = Modifier) 
                             .height(60.dp)
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.group_add_fill0_wght400_grad0_opsz24) ,
+                            painter = painterResource(R.drawable.person_add_fill0_wght400_grad0_opsz24) ,
                             contentDescription = null ,
                             modifier = Modifier.size(40.dp)
                         )
@@ -90,7 +90,7 @@ fun MangeGr (navController : NavHostController , modifier: Modifier = Modifier) 
                         Spacer(modifier = modifier.width(10.dp))
 
                         Text(
-                            text = "Add Group" ,
+                            text = "Add student" ,
                             fontSize = 15.sp ,
                             fontWeight = FontWeight.Bold
                         )
@@ -105,7 +105,7 @@ fun MangeGr (navController : NavHostController , modifier: Modifier = Modifier) 
                             .height(60.dp)
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.group_remove_fill0_wght400_grad0_opsz24) ,
+                            painter = painterResource(R.drawable.person_remove_fill0_wght400_grad0_opsz24) ,
                             contentDescription = null ,
                             modifier = Modifier.size(40.dp)
                         )
@@ -113,7 +113,7 @@ fun MangeGr (navController : NavHostController , modifier: Modifier = Modifier) 
                         Spacer(modifier = modifier.width(10.dp))
 
                         Text(
-                            text = "Remove Group" ,
+                            text = "Remove student" ,
                             fontSize = 15.sp ,
                             fontWeight = FontWeight.Bold
                         )
@@ -121,5 +121,7 @@ fun MangeGr (navController : NavHostController , modifier: Modifier = Modifier) 
                 }
             }
         }
+
     }
 }
+
