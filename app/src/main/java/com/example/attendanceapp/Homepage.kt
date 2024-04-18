@@ -167,6 +167,7 @@ fun TopAppBar(text : String ,modifier: Modifier = Modifier) {
                     style = MaterialTheme.typography.displayLarge,
                     fontSize = 27.sp,
                     fontWeight = FontWeight.Bold,
+                    lineHeight = 30.sp,
                     modifier = modifier.fillMaxWidth()
                 )
 
