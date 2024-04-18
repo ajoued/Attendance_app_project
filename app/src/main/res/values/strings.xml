@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Attendance App</string>
+    <string name="title_activity_homepage">Homepage</string>
+    <string name="title_activity_secend_page">SecendPage</string>
+</resources>
