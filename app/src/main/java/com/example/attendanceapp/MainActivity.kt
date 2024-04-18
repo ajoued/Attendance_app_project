@@ -48,8 +48,6 @@ class MainActivity : ComponentActivity() {
                         composable("5"){
                             AttendanceHistory(navController=navController)
                         }
-
-
                         composable("6"){
                             RecordAttd(navController=navController)
                         }
@@ -78,6 +76,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     AttendanceAppTheme {
-    
+
     }
 }
