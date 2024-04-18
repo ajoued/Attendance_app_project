@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -56,7 +57,8 @@ fun RecordAttd(navController : NavHostController , modifier: Modifier = Modifier
                     Icon(
                         painter = painterResource(R.drawable.calendar_month_fill0_wght400_grad0_opsz24) ,
                         contentDescription = null ,
-                        modifier = Modifier.size(50.dp)
+                        modifier = Modifier.size(50.dp),
+                        tint = Color.Black
                     )
 
                     Spacer(modifier = modifier.width(10.dp))
@@ -80,7 +82,8 @@ fun RecordAttd(navController : NavHostController , modifier: Modifier = Modifier
                     Icon(
                         painter = painterResource(R.drawable.home_icon_team_tr) ,
                         contentDescription = null ,
-                        modifier = Modifier.size(50.dp)
+                        modifier = Modifier.size(50.dp),
+                        tint = Color.Black
                     )
 
                     Spacer(modifier = modifier.width(10.dp))

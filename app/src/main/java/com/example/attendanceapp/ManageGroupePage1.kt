@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -84,7 +85,8 @@ fun PageGroupe( navController : NavHostController ,modifier: Modifier = Modifier
                         Icon(
                             painter = painterResource(R.drawable.person_add_fill0_wght400_grad0_opsz24) ,
                             contentDescription = null ,
-                            modifier = Modifier.size(40.dp)
+                            modifier = Modifier.size(40.dp),
+                            tint = Color.Black
                         )
 
                         Spacer(modifier = modifier.width(10.dp))
@@ -107,7 +109,8 @@ fun PageGroupe( navController : NavHostController ,modifier: Modifier = Modifier
                         Icon(
                             painter = painterResource(R.drawable.person_remove_fill0_wght400_grad0_opsz24) ,
                             contentDescription = null ,
-                            modifier = Modifier.size(40.dp)
+                            modifier = Modifier.size(40.dp),
+                            tint = Color.Black
                         )
 
                         Spacer(modifier = modifier.width(10.dp))

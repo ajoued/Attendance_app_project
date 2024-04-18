@@ -28,6 +28,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -65,7 +66,8 @@ fun Houmepg(navController : NavHostController , modifier: Modifier = Modifier) {
                     Icon(
                         painter = painterResource(R.drawable.home_icon_team_tr) ,
                         contentDescription = null ,
-                        modifier = Modifier.size(50.dp)
+                        modifier = Modifier.size(50.dp),
+                        tint = Color.Black
                     )
 
                     Spacer(modifier = modifier.width(10.dp))
@@ -91,7 +93,8 @@ fun Houmepg(navController : NavHostController , modifier: Modifier = Modifier) {
                     Icon(
                         painter = painterResource(R.drawable.edit_calendar_black_24dp) ,
                         contentDescription = null ,
-                        modifier = Modifier.size(50.dp)
+                        modifier = Modifier.size(50.dp),
+                        tint = Color.Black
                     )
 
                     Spacer(modifier = modifier.width(10.dp))

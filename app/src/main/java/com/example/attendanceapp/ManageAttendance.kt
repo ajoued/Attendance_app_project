@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,7 +62,8 @@ fun ManageAttendace (navController : NavHostController , modifier: Modifier = Mo
                     Icon(
                         painter = painterResource(R.drawable.attendance_icon_24) ,
                         contentDescription = null ,
-                        modifier = Modifier.size(50.dp)
+                        modifier = Modifier.size(50.dp),
+                        tint = Color.Black
                     )
 
                     Spacer(modifier = modifier.width(10.dp))
@@ -87,7 +89,8 @@ fun ManageAttendace (navController : NavHostController , modifier: Modifier = Mo
                     Icon(
                         painter = painterResource(R.drawable.free_cancellation_fill0_wght400_grad0_opsz24) ,
                         contentDescription = null ,
-                        modifier = Modifier.size(50.dp)
+                        modifier = Modifier.size(50.dp),
+                        tint = Color.Black
                     )
 
                     Spacer(modifier = modifier.width(10.dp))
