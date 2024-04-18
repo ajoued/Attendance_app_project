@@ -13,6 +13,11 @@
         android:theme="@style/Theme.AttendanceApp"
         tools:targetApi="31">
         <activity
+            android:name=".FifthPage"
+            android:exported="false"
+            android:label="@string/title_activity_fifth_page"
+            android:theme="@style/Theme.AttendanceApp" />
+        <activity
             android:name=".SecendPage"
             android:exported="false"
             android:label="@string/title_activity_secend_page"

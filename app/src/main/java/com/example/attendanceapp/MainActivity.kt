@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MangeGr()
+
                 }
             }
         }
@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     AttendanceAppTheme {
-        MangeGr()
+        ²
 
     }
 }

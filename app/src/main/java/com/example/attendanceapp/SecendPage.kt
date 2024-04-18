@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -56,6 +57,7 @@ fun MangeGr (modifier: Modifier = Modifier) {
                             innerPadding
                         )
                 }
+                .fillMaxWidth()
 
             ,
             contentAlignment = Alignment.BottomCenter
@@ -65,9 +67,14 @@ fun MangeGr (modifier: Modifier = Modifier) {
                     text = " Hold to change group name" ,
                     fontSize = 17.sp ,
                     fontWeight = FontWeight.Bold,
-                    textAlign =
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
                 )
-                Row(modifier = modifier.padding(bottom = 20.dp)) {
+                Spacer(modifier = modifier.height(20.dp))
+                Row(modifier = modifier
+                    .padding(bottom = 20.dp)
+                    .fillMaxWidth()) {
                     Button(
                         onClick = { /*TODO*/ } ,
                         shape = RoundedCornerShape(5.dp) ,
