@@ -28,7 +28,7 @@ import com.example.attendanceapp.ui.theme.AttendanceAppTheme
 @Composable
 fun AttendanceHistory (navController : NavHostController ,modifier: Modifier = Modifier) {
     Scaffold(
-        topBar = { TopAppBar("Manage Attendance") }
+        topBar = { TopAppBar("Attendance History") }
     ) { innerPadding ->
         Box(
             modifier = Modifier
