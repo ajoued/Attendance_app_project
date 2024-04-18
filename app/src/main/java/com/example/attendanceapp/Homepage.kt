@@ -34,11 +34,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import java.time.format.TextStyle
 
 
 @Composable
-fun Houmepg( modifier: Modifier = Modifier) {
+fun Houmepg(navController : NavHostController , modifier: Modifier = Modifier) {
     Scaffold(
         topBar = { TopAppBar("Attendance App") }
     ) {innerPadding ->
@@ -55,7 +56,7 @@ fun Houmepg( modifier: Modifier = Modifier) {
         ){
             Column() {
                 Button(
-                    onClick = { /*TODO*/ } ,
+                    onClick = { navController.navigate("secende") } ,
                     shape = RoundedCornerShape(5.dp) ,
                     modifier = modifier
                         .width(250.dp)
@@ -79,7 +80,9 @@ fun Houmepg( modifier: Modifier = Modifier) {
                 Spacer(modifier = modifier.height(20.dp))
 
                 Button(
-                    onClick = { /*TODO*/ } ,
+                    onClick = {
+                        navController.navigate("forth")
+                    } ,
                     shape = RoundedCornerShape(5.dp) ,
                     modifier = modifier
                         .width(250.dp)

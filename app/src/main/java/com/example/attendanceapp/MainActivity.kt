@@ -10,6 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.attendanceapp.ui.theme.AttendanceAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,7 +25,28 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController ,
+                        startDestination = "home"
+                    ){
+                        composable("home"){
+                            Houmepg(navController=navController)
+                        }
+                        composable("secende"){
+                            MangeGr(navController=navController)
+                        }
+                        composable("therd"){
+                            RecordAttd(navController=navController)
+                        }
+                        composable("forth"){
+                            ManageAttendace(navController=navController)
+                        }
+                        composable("fifth"){
+                            AttendanceHistory(navController=navController)
+                        }
 
+                    }
                 }
             }
         }
@@ -35,7 +59,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     AttendanceAppTheme {
-        ²
+        
 
     }
 }

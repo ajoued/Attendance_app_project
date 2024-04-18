@@ -25,10 +25,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 
 
 @Composable
-fun MangeGr (modifier: Modifier = Modifier) {
+fun MangeGr (navController : NavHostController , modifier: Modifier = Modifier) {
     Scaffold(
         topBar = { TopAppBar("Manage Groups") }
     ) { innerPadding ->

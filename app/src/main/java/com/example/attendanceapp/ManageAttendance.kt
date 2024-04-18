@@ -28,11 +28,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.attendanceapp.ui.theme.AttendanceAppTheme
 
 
 @Composable
-fun ManageAttendace (modifier: Modifier = Modifier) {
+fun ManageAttendace (navController : NavHostController , modifier: Modifier = Modifier) {
     Scaffold(
         topBar = { TopAppBar("Manage Attendance") }
     ) {innerPadding ->
@@ -112,8 +113,3 @@ fun ManageAttendace (modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun pageperview() {
-    ManageAttendace()
-}
