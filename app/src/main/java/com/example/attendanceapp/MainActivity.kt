@@ -63,6 +63,9 @@ class MainActivity : ComponentActivity() {
                         composable("10"){
                             HistoryStudent(navController=navController)
                         }
+                        composable("11"){
+                            PageGroupe(navController=navController)
+                        }
                     }
                 }
             }
