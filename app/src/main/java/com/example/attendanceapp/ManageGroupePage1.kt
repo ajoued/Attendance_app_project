@@ -115,6 +115,8 @@ fun PageGroupe( navController : NavHostController ,modifier: Modifier = Modifier
                         modifier = modifier
                             .width(170.dp)
                             .height(60.dp)
+                            .padding(start = 10.dp)
+
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.person_add_fill0_wght400_grad0_opsz24) ,
@@ -220,6 +222,7 @@ fun PageGroupe( navController : NavHostController ,modifier: Modifier = Modifier
                         modifier = modifier
                             .width(170.dp)
                             .height(60.dp)
+                            .padding(end = 10.dp)
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.person_remove_fill0_wght400_grad0_opsz24) ,

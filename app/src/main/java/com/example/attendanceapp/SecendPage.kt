@@ -130,6 +130,8 @@ fun MangeGr (navController : NavHostController , modifier: Modifier = Modifier) 
                         modifier = modifier
                             .width(170.dp)
                             .height(60.dp)
+                            .padding(start = 10.dp)
+
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.group_add_fill0_wght400_grad0_opsz24) ,
@@ -238,6 +240,7 @@ fun MangeGr (navController : NavHostController , modifier: Modifier = Modifier) 
                         modifier = modifier
                             .width(170.dp)
                             .height(60.dp)
+                            .padding(end = 10.dp)
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.group_remove_fill0_wght400_grad0_opsz24) ,

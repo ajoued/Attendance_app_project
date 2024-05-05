@@ -21,6 +21,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,6 +29,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ClipOp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -52,7 +54,8 @@ fun Houmepg(navController : NavHostController , modifier: Modifier = Modifier) {
                         .padding(
                             innerPadding
                         )
-                }.padding(bottom = 120.dp),
+                }
+                .padding(bottom = 120.dp),
             contentAlignment = Alignment.Center
         ){
             Column() {
@@ -122,7 +125,7 @@ fun Houmepg(navController : NavHostController , modifier: Modifier = Modifier) {
             Image(
                 painter = painterResource(R.drawable.studentbackground) ,
                 contentDescription = null ,
-            modifier=modifier
+            modifier= modifier
                 .padding(bottom = 30.dp)
                 .fillMaxWidth()
             )
@@ -140,40 +143,45 @@ fun Houmepg(navController : NavHostController , modifier: Modifier = Modifier) {
 
 
 
-
-
-
-
-
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBar(text : String ,modifier: Modifier = Modifier) {
-    CenterAlignedTopAppBar(
-        title = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier.fillMaxSize()
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.method_draw_image),
-                    contentDescription = null,
-                    modifier = Modifier.size(80.dp)
-                )
-                Spacer(modifier = modifier.width(20.dp))
-                Text(
-                    text = text,
-                    style = MaterialTheme.typography.displayLarge,
-                    fontSize = 27.sp,
-                    fontWeight = FontWeight.Bold,
-                    lineHeight = 30.sp,
-                    modifier = modifier.fillMaxWidth()
-                )
+
+        CenterAlignedTopAppBar(
+            title = {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically ,
+                    modifier = modifier.fillMaxSize()
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.method_draw_image) ,
+                        contentDescription = null ,
+                        modifier = Modifier.size(80.dp)
+                    )
+                    Spacer(modifier = modifier.width(20.dp))
+                    Text(
+                        text = text ,
+                        style = MaterialTheme.typography.displayLarge ,
+                        fontSize = 27.sp ,
+                        fontWeight = FontWeight.Bold ,
+                        lineHeight = 30.sp ,
+                        modifier = modifier.fillMaxWidth()
+                    )
 
 
-            }
-        },
-        modifier = modifier.padding(top = 10.dp)
-    )
-}
+                }
+            } ,
+            modifier = modifier.padding(top = 10.dp)
+        )
+    }
+
+
+
+
+
+
+
+
+
+
+
