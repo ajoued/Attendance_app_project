@@ -43,30 +43,6 @@ fun AttendanceHistory (navController : NavHostController ,modifier: Modifier = M
         ) {
             Column {
                 Button(
-                    onClick = { /*TODO*/ } ,
-                    shape = RoundedCornerShape(5.dp) ,
-                    modifier = modifier
-                        .width(250.dp)
-                        .height(70.dp)
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.home_icon_team_tr) ,
-                        contentDescription = null ,
-                        modifier = Modifier.size(50.dp),
-                        tint = Color.Black
-                    )
-
-                    Spacer(modifier = modifier.width(10.dp))
-
-                    Text(
-                        text = " Select Group" ,
-                        fontSize = 21.sp ,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Spacer(modifier = modifier.height(150.dp))
-
-                Button(
                     onClick = {
                         navController.navigate("9")
                     } ,

@@ -1,7 +1,6 @@
 package com.example.attendanceapp
 
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,16 +16,20 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -34,26 +37,34 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
+import com.example.attendanceapp.DataBase.AppViewModel
+import com.example.attendanceapp.DataBase.Students
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PageGroupe( navController : NavHostController ,modifier: Modifier = Modifier) {
+ fun PageGroupee(navController : NavHostController, viewModel: AppViewModel, modifier: Modifier = Modifier) {
+    val studentName = remember { mutableStateOf("") }
     var textfieldstatee by remember {
         mutableStateOf("")
     }
     val openDiloge = remember {
         mutableStateOf(false)
     }
-    val GroupListe = remember {
-        mutableListOf<String>()
+
+    val emty by remember {
+        mutableStateOf("")
     }
+
+
+    val selectedGroup by viewModel.selectedGroup.collectAsState()
+
+    val Students by viewModel.getStudentsByGroupId(0).observeAsState(initial = emptyList())
     Scaffold(
         topBar = { TopAppBar("Manage Group ")}
     ) { innerPadding ->
@@ -69,16 +80,99 @@ fun PageGroupe( navController : NavHostController ,modifier: Modifier = Modifier
                 } ,
             contentAlignment = Alignment.TopCenter
         ) {
-            LazyColumn (contentPadding = PaddingValues(16.dp) , verticalArrangement = Arrangement.spacedBy(16.dp)){
-                items(GroupListe){ data->
-                    Card(elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)) {
-                        ListItem(headlineContent = {
-                            Text(text = data, style = TextStyle(fontSize = 18.sp, color = Color.Black) ,modifier=modifier.padding(start = 20.dp))
-                        })
+            if (Students.isEmpty()) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier
+                        .padding(16.dp))
+                {
+                    Text(text = "no student available")
+                }
+            }else{
+                LazyColumn (contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)){
+                    items(Students){
+                        Card(
+                            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                        ) {
+                            androidx.compose.material3.ListItem(headlineContent = {
+                                Row (
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center
+                                ){
+                                    Text(
+                                        it.studentName,
+                                        fontSize = 24.sp,
+                                        modifier= Modifier.padding(14.dp)
+                                    )
+                                    Spacer(modifier = modifier.width(160.dp))
+                                    IconButton(onClick = {
+                                        viewModel.delete(it)
+                                    }) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.delete_24dp) ,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(50.dp),
+                                            tint = Color.Black
+                                        )
+                                    }
+                                }
+                            })
+                        }
                     }
                 }
             }
         }
+        if(openDiloge.value){
+            AlertDialog(
+                onDismissRequest = { openDiloge.value = false },
+                confirmButton = {
+                    Button(onClick = {
+                        viewModel.insert(Students(studentName = textfieldstatee, StudentID = 0, groupeId = 0))
+                        openDiloge.value = false
+                        textfieldstatee = emty
+                    }, enabled = textfieldstatee!=""
+                    ) {
+                        Text(text = "ADD")
+                    }
+                },
+                dismissButton ={
+                    Button(onClick = {
+                        openDiloge.value = false
+                        textfieldstatee = emty
+                    }
+                    ) {
+                        Text(text = "Cancel")
+                    }
+                } ,
+                title = {
+                    Text(text="Entre the name of student",
+                        textAlign = TextAlign.Center ,
+                        fontWeight = FontWeight.Bold,
+                        modifier = modifier
+                            .padding(top = 15.dp)
+                            .fillMaxWidth() ,
+                        color = Color.Black
+                    )
+                },
+                text = {
+                    TextField(
+                        value = textfieldstatee,
+                        onValueChange = { textfieldstatee = it },
+                        label = {
+                            Text(text = "Student name ")
+                        }
+                    )
+                }
+            )
+        }
+
+
+
+
+
+
+
         Spacer(modifier = modifier.height(20.dp))
         Box(
             modifier = Modifier
@@ -89,9 +183,7 @@ fun PageGroupe( navController : NavHostController ,modifier: Modifier = Modifier
                             innerPadding
                         )
                 }
-                .fillMaxWidth()
-
-            ,
+                .fillMaxWidth(),
             contentAlignment = Alignment.BottomCenter
         ){
             Column {
@@ -113,13 +205,13 @@ fun PageGroupe( navController : NavHostController ,modifier: Modifier = Modifier
                         } ,
                         shape = RoundedCornerShape(5.dp) ,
                         modifier = modifier
-                            .width(170.dp)
-                            .height(60.dp)
-                            .padding(start = 10.dp)
+                            .fillMaxWidth()
+                            .height(100.dp)
+                            .padding(20.dp)
 
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.person_add_fill0_wght400_grad0_opsz24) ,
+                            painter = painterResource(R.drawable.group_add_fill0_wght400_grad0_opsz24) ,
                             contentDescription = null ,
                             modifier = Modifier.size(40.dp),
                             tint = Color.Black
@@ -128,113 +220,7 @@ fun PageGroupe( navController : NavHostController ,modifier: Modifier = Modifier
                         Spacer(modifier = modifier.width(10.dp))
 
                         Text(
-                            text = "Add student" ,
-                            fontSize = 15.sp ,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    if(openDiloge.value){
-                        Dialog(onDismissRequest = { openDiloge.value = false }) {
-                            Box(modifier = modifier
-                                .height(200.dp),
-                                contentAlignment = Alignment.BottomCenter
-
-                            ){
-                                Column(modifier) {
-                                    Box(
-                                        modifier= modifier
-                                            .height(250.dp)
-                                            .background(
-                                                color = Color(0xFFF3FBFF) ,
-                                                shape = RoundedCornerShape(25.dp)
-                                            ),
-                                        contentAlignment = Alignment.BottomCenter
-
-                                    ) {
-                                        Column(
-                                            modifier=modifier
-                                                .padding(16.dp),
-                                            horizontalAlignment = Alignment.CenterHorizontally
-                                        ) {
-                                            Text(
-                                                text = "Entre the name of student" ,
-                                                textAlign = TextAlign.Center ,
-                                                modifier = modifier
-                                                    .padding(top = 15.dp)
-                                                    .fillMaxWidth() ,
-                                                color = Color.Black
-                                            )
-                                            Spacer(modifier = modifier.height(20.dp))
-                                            TextField(
-                                                value = textfieldstatee,
-                                                onValueChange = { textfieldstatee = it },
-                                                label = {
-                                                    Text(text = "Student name ")
-                                                }
-                                            )
-                                            Spacer(modifier = modifier.height(20.dp))
-                                            Row {
-                                                Button(
-                                                    onClick = {
-                                                        GroupListe.add(textfieldstatee)
-                                                        textfieldstatee=""
-                                                    }, enabled = textfieldstatee!="",
-                                                    shape = RoundedCornerShape(5.dp) ,
-                                                    modifier = modifier
-                                                        .width(100.dp)
-                                                        .height(50.dp)
-                                                ) {
-                                                    Text(
-                                                        text = "ADD" ,
-                                                        color = Color.Black ,
-                                                        fontWeight = FontWeight.Bold
-                                                    )
-                                                }
-                                                Spacer(modifier = modifier.width(30.dp))
-                                                Button(
-                                                    onClick = {
-                                                        openDiloge.value=false
-                                                        textfieldstatee=""
-                                                    },
-                                                    shape = RoundedCornerShape(5.dp) ,
-                                                    modifier = modifier
-                                                        .width(100.dp)
-                                                        .height(50.dp)
-                                                ){
-                                                    Text(
-                                                        text = "Close" ,
-                                                        color = Color.Black ,
-                                                        fontWeight = FontWeight.Bold
-                                                    )
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    Spacer(modifier = modifier.width(15.dp))
-
-                    Button(
-                        onClick = { /*TODO*/ } ,
-                        shape = RoundedCornerShape(5.dp) ,
-                        modifier = modifier
-                            .width(170.dp)
-                            .height(60.dp)
-                            .padding(end = 10.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.person_remove_fill0_wght400_grad0_opsz24) ,
-                            contentDescription = null ,
-                            modifier = Modifier.size(40.dp),
-                            tint = Color.Black
-                        )
-
-                        Spacer(modifier = modifier.width(10.dp))
-
-                        Text(
-                            text = "Remove student" ,
+                            text = "Add Student" ,
                             fontSize = 15.sp ,
                             fontWeight = FontWeight.Bold
                         )
@@ -242,7 +228,5 @@ fun PageGroupe( navController : NavHostController ,modifier: Modifier = Modifier
                 }
             }
         }
-
     }
 }
-

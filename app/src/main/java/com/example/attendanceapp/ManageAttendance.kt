@@ -52,7 +52,7 @@ fun ManageAttendace (navController : NavHostController , modifier: Modifier = Mo
             Column {
                 Button(
                     onClick = {
-                        navController.navigate("6")
+                        navController.navigate("8")
                     } ,
                     shape = RoundedCornerShape(5.dp) ,
                     modifier = modifier

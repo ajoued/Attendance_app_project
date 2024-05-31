@@ -7,16 +7,18 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.attendanceapp.Importent.MangeGr
+import com.example.attendanceapp.Importent.PageGroupe
+import com.example.attendanceapp.Importent.RecordAttd
+import com.example.attendanceapp.Importent.TakeAttn
 import com.example.attendanceapp.ui.theme.AttendanceAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -42,17 +44,11 @@ class MainActivity : ComponentActivity() {
                         composable("2"){
                             MangeGr(navController=navController)
                         }
-                        composable("3"){
-                            RecordAttd(navController=navController)
-                        }
                         composable("4"){
                             ManageAttendace(navController=navController)
                         }
                         composable("5"){
                             AttendanceHistory(navController=navController)
-                        }
-                        composable("6"){
-                            RecordAttd(navController=navController)
                         }
                         composable("7"){
                             AttendanceHistory(navController=navController)
@@ -74,15 +70,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
-
-@Composable
-fun SplashScreen(){
-    Image(
-        painter = painterResource(id = R.drawable.untitled), // Replace with your image resource ID
-        contentDescription = null,
-        modifier = Modifier.fillMaxSize() // Fills the entire screen
-    )
 }
 
 @Preview(showBackground = true)
