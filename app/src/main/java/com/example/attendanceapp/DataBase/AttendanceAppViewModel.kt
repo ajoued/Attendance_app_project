@@ -49,6 +49,8 @@ class AppViewModel(val repository: APPRepository) : ViewModel() {
         selectedGroup.value = group
     }
 
+
+
     fun GetallGroupes(): LiveData<List<Groups>> {
         return repository.reaAllGroupNotOrdred()
     }
@@ -62,5 +64,10 @@ class AppViewModel(val repository: APPRepository) : ViewModel() {
     }
     fun remove(attendance: Attendance) = viewModelScope.launch {
         repository.remove(attendance)
+    }
+
+
+    fun getAllDates(): LiveData<List<String>> {
+        return repository.getAllDates()
     }
 }

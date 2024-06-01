@@ -48,4 +48,7 @@ interface APPDao {
     @Query("SELECT * FROM Attendance ORDER BY attendanceId ASC")
     fun readAllDataAttendance(): Flow<List<Attendance>>
 
+
+    @Query("SELECT date FROM Attendance")
+    fun getAllDates(): LiveData<List<String>>
 }

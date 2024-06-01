@@ -10,12 +10,13 @@ import com.example.attendanceapp.DataBase.AttendanceAppDatabase
 import com.example.attendanceapp.HistorySessionn
 import com.example.attendanceapp.MangeGrr
 
+
 @Composable
-fun MangeGr(navController : NavHostController, modifier: Modifier = Modifier){
+fun HistorySession(navController : NavHostController, modifier: Modifier = Modifier){
     val contex = LocalContext.current
     val db = AttendanceAppDatabase.getDatabase(contex)
     val repository = APPRepository(db)
     val myViewModel = AppViewModel(repository)
 
-    MangeGrr(navController,myViewModel)
+    HistorySessionn(navController,myViewModel)
 }

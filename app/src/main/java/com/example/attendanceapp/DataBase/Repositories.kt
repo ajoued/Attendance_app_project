@@ -40,4 +40,8 @@ class APPRepository(private val APPDao: AttendanceAppDatabase) {
     suspend fun remove(attendance: Attendance){
         APPDao.APPDao().removeAttendance(attendance)
     }
+
+    fun getAllDates(): LiveData<List<String>> {
+        return APPDao.APPDao().getAllDates()
+    }
 }

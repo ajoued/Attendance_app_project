@@ -14,7 +14,6 @@ data class Groups(
 
 
 
-
 @Entity(tableName = "Students",
     foreignKeys = [ForeignKey(
         entity = Groups::class,
