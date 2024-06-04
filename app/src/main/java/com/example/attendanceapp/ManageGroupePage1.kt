@@ -20,7 +20,10 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -38,11 +41,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.attendanceapp.DataBase.AppViewModel
+import com.example.attendanceapp.DataBase.Groups
 import com.example.attendanceapp.DataBase.Students
 
 
@@ -60,11 +65,14 @@ import com.example.attendanceapp.DataBase.Students
     val emty by remember {
         mutableStateOf("")
     }
+    var selectedGroup by remember { mutableStateOf<Groups?>(null) }
+    val groups by viewModel.group.collectAsState(initial = emptyList())
+    var expanded by remember { mutableStateOf(false)}
+    var textFieldValue by remember { mutableStateOf(TextFieldValue("")) }
 
+    var text : String = ""
+    val Students by viewModel.getAllStudents().observeAsState(initial = emptyList())
 
-    val selectedGroup by viewModel.selectedGroup.collectAsState()
-
-    val Students by viewModel.getStudentsByGroupId(0).observeAsState(initial = emptyList())
     Scaffold(
         topBar = { TopAppBar("Manage Group ")}
     ) { innerPadding ->
@@ -101,11 +109,13 @@ import com.example.attendanceapp.DataBase.Students
                                     horizontalArrangement = Arrangement.Center
                                 ){
                                     Text(
-                                        it.studentName,
-                                        fontSize = 24.sp,
-                                        modifier= Modifier.padding(14.dp)
+                                        text = it.studentName,
+                                        fontSize = 17.sp,
+                                        modifier= Modifier.padding(14.dp).width(220.dp)
                                     )
-                                    Spacer(modifier = modifier.width(160.dp))
+
+                                    Spacer(modifier = modifier.width(20.dp))
+
                                     IconButton(onClick = {
                                         viewModel.delete(it)
                                     }) {
@@ -128,9 +138,18 @@ import com.example.attendanceapp.DataBase.Students
                 onDismissRequest = { openDiloge.value = false },
                 confirmButton = {
                     Button(onClick = {
-                        viewModel.insert(Students(studentName = textfieldstatee, StudentID = 0, groupeId = 0))
-                        openDiloge.value = false
-                        textfieldstatee = emty
+                        if (selectedGroup!=null && textfieldstatee!=null) {
+                            viewModel.insert(
+                                Students(
+                                    studentName = textfieldstatee,
+                                    StudentID = 0,
+                                    groupeId = selectedGroup!!.GroupeId
+                                )
+                            )
+                            text = selectedGroup!!.GroupeNumber.toString()
+                            openDiloge.value = false
+                            textfieldstatee = emty
+                        }
                     }, enabled = textfieldstatee!=""
                     ) {
                         Text(text = "ADD")
@@ -156,14 +175,56 @@ import com.example.attendanceapp.DataBase.Students
                     )
                 },
                 text = {
-                    TextField(
-                        value = textfieldstatee,
-                        onValueChange = { textfieldstatee = it },
-                        label = {
-                            Text(text = "Student name ")
+                    Column {
+                        TextField(
+                            value = textfieldstatee,
+                            onValueChange = { textfieldstatee = it },
+                            label = {
+                                Text(text = "Student name ")
+                            }
+                        )
+                        Spacer(modifier =Modifier.height(30.dp))
+                        ExposedDropdownMenuBox(
+                            expanded = expanded,
+                            onExpandedChange = { expanded = !expanded },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            TextField(
+                                value = textFieldValue,
+                                onValueChange = { textFieldValue = it },
+                                label = { Text("Group") },
+                                readOnly = true,
+                                trailingIcon = {
+                                    ExposedDropdownMenuDefaults.TrailingIcon(
+                                        expanded = expanded
+                                    )
+                                },
+                                modifier = Modifier
+                                    .menuAnchor()
+                                    .fillMaxWidth()
+                            )
+                            ExposedDropdownMenu(
+                                expanded = expanded,
+                                onDismissRequest = { expanded = false },
+                                modifier = Modifier.width(150.dp)
+                            ) {
+                                groups.forEach { group ->
+                                    DropdownMenuItem(
+                                        text = { Text("Group ${group.GroupeNumber}") },
+                                        onClick = {
+                                            selectedGroup = group
+                                            textFieldValue =
+                                                TextFieldValue("Group ${group.GroupeNumber}")
+                                            expanded = false
+                                        },
+                                        modifier = Modifier.fillMaxWidth()
+                                    )
+                                }
+                            }
                         }
-                    )
-                }
+                    }
+                },
+
             )
         }
 

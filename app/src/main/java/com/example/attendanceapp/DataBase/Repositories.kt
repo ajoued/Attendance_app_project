@@ -27,6 +27,8 @@ class APPRepository(private val APPDao: AttendanceAppDatabase) {
     suspend fun delete(student: Students) {
         APPDao.APPDao().deleteStudent(student)
     }
+    fun getAllStudents(): LiveData<List<Students>> = APPDao.APPDao().getAllStudents()
+
 
     suspend fun searchStudentsByName(name: String): List<Students> {
         return APPDao.APPDao().getStudentsByName(name)

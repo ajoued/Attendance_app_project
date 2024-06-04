@@ -23,6 +23,9 @@ class AppViewModel(val repository: APPRepository) : ViewModel() {
         return repository.getStudentsByGroupId(groupeId)
     }
 
+    fun getAllStudents(): LiveData<List<Students>> {
+        return repository.getAllStudents()
+    }
 
     private val _foundStudents = mutableStateOf<List<Students>>(listOf())
     val foundStudents: MutableState<List<Students>> = _foundStudents

@@ -22,6 +22,8 @@ interface APPDao {
     @Query("SELECT * FROM Students WHERE studentName LIKE :name")
     suspend fun getStudentsByName(name: String): List<Students>
 
+    @Query("SELECT * FROM Students")
+    fun getAllStudents(): LiveData<List<Students>>
 
     // Insert group
     @Insert
