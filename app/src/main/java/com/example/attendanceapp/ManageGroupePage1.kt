@@ -1,6 +1,7 @@
 package com.example.attendanceapp
 
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -72,6 +74,13 @@ import com.example.attendanceapp.DataBase.Students
 
     var text : String = ""
     val Students by viewModel.getAllStudents().observeAsState(initial = emptyList())
+
+    val openDeleteDialog = remember {
+        mutableStateOf(false)
+    }
+
+    val context = LocalContext.current
+
 
     Scaffold(
         topBar = { TopAppBar("Manage Group ")}
@@ -117,7 +126,7 @@ import com.example.attendanceapp.DataBase.Students
                                     Spacer(modifier = modifier.width(20.dp))
 
                                     IconButton(onClick = {
-                                        viewModel.delete(it)
+                                        openDeleteDialog.value = true
                                     }) {
                                         Icon(
                                             painter = painterResource(id = R.drawable.delete_24dp) ,
@@ -125,6 +134,49 @@ import com.example.attendanceapp.DataBase.Students
                                             modifier = Modifier.size(50.dp),
                                             tint = Color.Black
                                         )
+                                        if (openDeleteDialog.value) {
+                                            AlertDialog(
+                                                onDismissRequest = { openDeleteDialog.value = false },
+                                                title = {
+                                                    Text(
+                                                        text = "Delete Student",
+                                                        textAlign = TextAlign.Center,
+                                                        fontWeight = FontWeight.Bold,
+                                                        modifier = Modifier.padding(top = 15.dp).fillMaxWidth(),
+                                                        color = Color.Black
+                                                    )
+                                                },
+                                                text = {
+                                                    Text(
+                                                        text = "Are you sure you want to delete this student?",
+                                                        textAlign = TextAlign.Center,
+                                                        modifier = Modifier.fillMaxWidth(),
+                                                        color = Color.Black
+                                                    )
+                                                },
+                                                confirmButton = {
+                                                    Button(
+                                                        onClick = {
+                                                            // Delete the group
+                                                            viewModel.delete(it)
+                                                            openDeleteDialog.value = false
+                                                            Toast.makeText(context,  "Student removed successfully", Toast.LENGTH_SHORT). show( )
+                                                        }
+                                                    ) {
+                                                        Text("Yes")
+                                                    }
+                                                },
+                                                dismissButton = {
+                                                    Button(
+                                                        onClick = {
+                                                            openDeleteDialog.value = false
+                                                        }
+                                                    ) {
+                                                        Text("No")
+                                                    }
+                                                }
+                                            )
+                                        }
                                     }
                                 }
                             })
@@ -258,7 +310,7 @@ import com.example.attendanceapp.DataBase.Students
                 )
                 Spacer(modifier = modifier.height(20.dp))
                 Row(modifier = modifier
-                    .padding(bottom = 20.dp)
+
                     .fillMaxWidth()) {
                     Button(
                         onClick = {
@@ -272,7 +324,7 @@ import com.example.attendanceapp.DataBase.Students
 
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.group_add_fill0_wght400_grad0_opsz24) ,
+                            painter = painterResource(R.drawable.person_add_fill0_wght400_grad0_opsz24) ,
                             contentDescription = null ,
                             modifier = Modifier.size(40.dp),
                             tint = Color.Black

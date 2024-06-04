@@ -55,8 +55,8 @@ fun Houmepg(navController : NavHostController , modifier: Modifier = Modifier) {
                             innerPadding
                         )
                 }
-                .padding(bottom = 120.dp),
-            contentAlignment = Alignment.Center
+                .padding(top = 120.dp,bottom = 120.dp),
+            contentAlignment = Alignment.TopCenter
         ){
             Column() {
                 Button(
@@ -67,7 +67,7 @@ fun Houmepg(navController : NavHostController , modifier: Modifier = Modifier) {
                         .height(70.dp)
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.home_icon_team_tr) ,
+                        painter = painterResource(R.drawable.team_management__1_) ,
                         contentDescription = null ,
                         modifier = Modifier.size(50.dp),
                         tint = Color.Black
@@ -77,6 +77,33 @@ fun Houmepg(navController : NavHostController , modifier: Modifier = Modifier) {
 
                     Text(
                         text = "Manage Group" ,
+                        fontSize = 21.sp ,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                Spacer(modifier = modifier.height(35.dp))
+
+                Button(
+                    onClick = {
+                        navController.navigate("11")
+                    } ,
+                    shape = RoundedCornerShape(5.dp) ,
+                    modifier = modifier
+                        .width(250.dp)
+                        .height(70.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.apprentice) ,
+                        contentDescription = null ,
+                        modifier = Modifier.size(50.dp),
+                        tint = Color.Black
+                    )
+
+                    Spacer(modifier = modifier.width(10.dp))
+
+                    Text(
+                        text = "Manage students" ,
                         fontSize = 21.sp ,
                         fontWeight = FontWeight.Bold
                     )

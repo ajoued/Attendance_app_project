@@ -1,5 +1,6 @@
 package com.example.attendanceapp
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,6 +44,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.NavHostController
 import com.example.attendanceapp.DataBase.AppViewModel
 import com.example.attendanceapp.DataBase.AttendanceAppDatabase
@@ -61,12 +63,16 @@ fun MangeGrr (navController : NavHostController, viewModel: AppViewModel, modifi
         mutableStateOf(false)
     }
 
+    val openDeleteDialog = remember {
+        mutableStateOf(false)
+    }
+
     val emty by remember {
         mutableStateOf("")
     }
 
     val groupesss by viewModel.group.collectAsState(initial = emptyList())
-
+    val context = LocalContext.current
     Scaffold(
         topBar = { TopAppBar("Manage Groups") }
     ) { innerPadding ->
@@ -95,12 +101,7 @@ fun MangeGrr (navController : NavHostController, viewModel: AppViewModel, modifi
                 LazyColumn (contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)){
                     items(groupesss){Groups ->
                         Card(
-                            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                            onClick = {
-                                navController.navigate("11")
-                                viewModel.selectGroup(Groups)
-                                Groups.GroupeId
-                            }
+                            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
                         ) {
                             androidx.compose.material3.ListItem(headlineContent = {
                                 Row (
@@ -114,7 +115,9 @@ fun MangeGrr (navController : NavHostController, viewModel: AppViewModel, modifi
                                     )
                                     Spacer(modifier = modifier.width(160.dp))
                                     IconButton(onClick = {
-                                        viewModel.delete(Groups)
+                                        openDeleteDialog.value = true
+
+
                                     }) {
                                         Icon(
                                             painter = painterResource(id = R.drawable.delete_24dp) ,
@@ -122,6 +125,49 @@ fun MangeGrr (navController : NavHostController, viewModel: AppViewModel, modifi
                                             modifier = Modifier.size(50.dp),
                                             tint = Color.Black
                                         )
+                                        if (openDeleteDialog.value) {
+                                            AlertDialog(
+                                                onDismissRequest = { openDeleteDialog.value = false },
+                                                title = {
+                                                    Text(
+                                                        text = "Delete Group",
+                                                        textAlign = TextAlign.Center,
+                                                        fontWeight = FontWeight.Bold,
+                                                        modifier = Modifier.padding(top = 15.dp).fillMaxWidth(),
+                                                        color = Color.Black
+                                                    )
+                                                },
+                                                text = {
+                                                    Text(
+                                                        text = "Are you sure you want to delete this group?",
+                                                        textAlign = TextAlign.Center,
+                                                        modifier = Modifier.fillMaxWidth(),
+                                                        color = Color.Black
+                                                    )
+                                                },
+                                                confirmButton = {
+                                                    Button(
+                                                        onClick = {
+                                                            // Delete the group
+                                                            viewModel.delete(Groups)
+                                                            openDeleteDialog.value = false
+                                                            Toast.makeText(context,  "Group removed successfully", Toast.LENGTH_SHORT). show( )
+                                                        }
+                                                    ) {
+                                                        Text("Yes")
+                                                    }
+                                                },
+                                                dismissButton = {
+                                                    Button(
+                                                        onClick = {
+                                                            openDeleteDialog.value = false
+                                                        }
+                                                    ) {
+                                                        Text("No")
+                                                    }
+                                                }
+                                            )
+                                        }
                                     }
                                 }
                             })
@@ -130,14 +176,27 @@ fun MangeGrr (navController : NavHostController, viewModel: AppViewModel, modifi
                 }
             }
         }
+
+
         if(openDilog.value){
             AlertDialog(
                 onDismissRequest = { openDilog.value = false },
                 confirmButton = {
                     Button(onClick = {
-                        viewModel.insert(Groups(GroupeId = 0,GroupeNumber = textfieldstate.toInt()))
-                        openDilog.value = false
-                        textfieldstate = emty
+
+                        val existingGroup = groupesss.find { it.GroupeNumber == textfieldstate.toInt() }
+                        if (existingGroup == null) {
+                            viewModel.insert(
+                                Groups(
+                                    GroupeId = 0,
+                                    GroupeNumber = textfieldstate.toInt()
+                                )
+                            )
+                            openDilog.value = false
+                            textfieldstate = emty
+                        }else{
+                            Toast.makeText(context,  "Group number already exists", Toast.LENGTH_SHORT). show( )
+                        }
                     }, enabled = textfieldstate!=""
                     ) {
                         Text(text = "ADD")
