@@ -111,13 +111,11 @@ fun MangeGrr (navController : NavHostController, viewModel: AppViewModel, modifi
                                     Text(
                                         "Group "+Groups.GroupeNumber,
                                         fontSize = 24.sp,
-                                        modifier= Modifier.padding(14.dp)
+                                        modifier= Modifier.padding(14.dp).width(220.dp)
                                     )
-                                    Spacer(modifier = modifier.width(160.dp))
+
                                     IconButton(onClick = {
                                         openDeleteDialog.value = true
-
-
                                     }) {
                                         Icon(
                                             painter = painterResource(id = R.drawable.delete_24dp) ,

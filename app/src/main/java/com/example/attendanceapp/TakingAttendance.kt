@@ -90,7 +90,14 @@ fun TakeAttnn(navController : NavHostController, viewModel : AppViewModel, modif
 
 
     Scaffold(
-        topBar = { TopAppBar("Taking Attendance") }
+        topBar = {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                TopAppBar("Take Attendance")
+            }
+        },
+        bottomBar = {
+
+        }
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -100,54 +107,161 @@ fun TakeAttnn(navController : NavHostController, viewModel : AppViewModel, modif
                         .padding(
                             innerPadding
                         )
-                } ,
+                },
             contentAlignment = Alignment.TopCenter
         ) {
-            if (Students.isEmpty()) {
-                // Check if it's because no group is selected or there are no students
-                if (selectedGroup == null) {
-                    Text("Please select a group")
-                } else {
-                    Text("No students in this group")
-                }
-            }else{
-                LazyColumn (contentPadding = PaddingValues(16.dp) ,verticalArrangement = Arrangement.spacedBy(16.dp)){
+            Column (Modifier.align(alignment = Alignment.TopCenter)){
+                Row(
+                    modifier
+                        .padding(bottom = 20.dp, start = 7.dp, end = 7.dp)
+                        .fillMaxWidth()
+                ) {
+                    Button(
+                        onClick = {
+                            datePickerDialog.show()
+                        },
+                        shape = RoundedCornerShape(5.dp),
+                        modifier = modifier
+                            .width(160.dp)
+                            .height(70.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.calendar_month_fill0_wght400_grad0_opsz24),
+                            contentDescription = null,
+                            modifier = Modifier.size(45.dp),
+                            tint = Color.Black
+                        )
 
-                    items(Students){
-                        val cardIndex = Students.indexOf(it)
-                        var icon by remember { mutableStateOf(uncheckedIcon)
-                        }
-                        Card(
-                            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    icon = if (icon == uncheckedIcon) checkedIcon else uncheckedIcon
-                                }
-                        ) {
-                            ListItem(headlineContent = {
-                                Row (
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.Center
-                                ){
-                                    Text(
-                                        it.studentName,
-                                        fontSize = 24.sp,
-                                        modifier= Modifier.padding(14.dp).width(220.dp)
-                                    )
-                                    Spacer(modifier = modifier.width(20.dp))
-                                    Icon(
-                                        painter = icon,
-                                        contentDescription = "Toggle Icon",
-                                        modifier = Modifier.size(24.dp)
-                                    )
-                                }
-                            })
-                        }
+
+                        Spacer(modifier = modifier.width(8.dp))
+
+                        Text(
+                            text = "Date ",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
 
+                    Spacer(modifier = modifier.width(20.dp))
+
+                    Button(
+                        onClick = {
+                            showDialog = true
+                        },
+                        shape = RoundedCornerShape(5.dp),
+                        modifier = modifier
+                            .width(160.dp)
+                            .height(70.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.home_icon_team_tr),
+                            contentDescription = null,
+                            modifier = Modifier.size(45.dp),
+                            tint = Color.Black
+                        )
+                        Spacer(modifier = modifier.width(8.dp))
+
+                        Text(
+                            text = "Group",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    if (showDialog) {
+                        AlertDialog(
+                            onDismissRequest = { showDialog = false },
+                            confirmButton = {
+                                Button(onClick = { showDialog = false }) {
+                                    Text("Close")
+                                }
+                            },
+                            title = {
+                                Text("Groups")
+                            },
+                            text = {
+                                if (groups.isEmpty()) {
+                                    Text("No groups available")
+                                } else {
+                                    LazyColumn {
+                                        items(groups) { group ->
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                modifier = Modifier.padding(vertical = 4.dp)
+                                            ) {
+                                                RadioButton(
+                                                    selected = selectedGroup == group,
+                                                    onClick = {
+                                                        selectedGroup = group
+                                                        GroupSe = selectedGroup!!.GroupeNumber
+                                                    }
+                                                )
+                                                Text(
+                                                    text = "Group ${group.GroupeNumber}",
+                                                    modifier = Modifier.padding(start = 8.dp)
+                                                )
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        )
+                    }
+                }
+                if (Students.isEmpty()) {
+                    // Check if it's because no group is selected or there are no students
+                    if (selectedGroup == null) {
+                        Text("Please select a group",Modifier.padding(start = 90.dp))
+                    } else {
+                        Text("No students in this group",Modifier.padding(start = 80.dp))
+                    }
+                } else {
+                    LazyColumn(
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+
+                        items(Students) {
+                            val cardIndex = Students.indexOf(it)
+                            var icon by remember {
+                                mutableStateOf(uncheckedIcon)
+                            }
+                            Card(
+                                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        icon =
+                                            if (icon == uncheckedIcon) checkedIcon else uncheckedIcon
+                                    }
+                            ) {
+                                ListItem(headlineContent = {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.Center
+                                    ) {
+                                        Text(
+                                            it.studentName,
+                                            fontSize = 24.sp,
+                                            modifier = Modifier
+                                                .padding(14.dp)
+                                                .width(220.dp)
+                                        )
+                                        Spacer(modifier = modifier.width(20.dp))
+                                        Icon(
+                                            painter = icon,
+                                            contentDescription = "Toggle Icon",
+                                            modifier = Modifier.size(24.dp)
+                                        )
+                                    }
+                                })
+                            }
+                        }
+
+                    }
                 }
             }
+
             Spacer(modifier = modifier.height(20.dp))
             Box(
                 modifier = Modifier
@@ -160,119 +274,32 @@ fun TakeAttnn(navController : NavHostController, viewModel : AppViewModel, modif
                     }
                     .fillMaxWidth(),
                 contentAlignment = Alignment.BottomCenter
-            ){
-                Column (){
-                    Row (){
+            ) {
+                Column (modifier = modifier.padding(bottom = 70.dp)){
+                    Row() {
                         Text(text = "Date selected : $selectedDate")
                         Spacer(modifier = modifier.width(20.dp))
-                        if (selectedGroup!=null){
+                        if (selectedGroup != null) {
                             Text(text = "Group selected : $GroupSe")
-                        }else{
+                        } else {
                             Text(text = "Group : ")
                         }
                     }
-                    Row(
-                        modifier
-                            .padding(bottom = 20.dp, start = 7.dp, end = 7.dp)
-                            .fillMaxWidth()
-                    ) {
-                        Button(
-                            onClick = {
-                                datePickerDialog.show()
-                                      },
-                            shape = RoundedCornerShape(5.dp),
-                            modifier = modifier
-                                .width(160.dp)
-                                .height(70.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.calendar_month_fill0_wght400_grad0_opsz24),
-                                contentDescription = null,
-                                modifier = Modifier.size(45.dp),
-                                tint = Color.Black
-                            )
-
-
-                            Spacer(modifier = modifier.width(8.dp))
-
-                            Text(
-                                text = "Date ",
-                                fontSize = 15.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-
-                        Spacer(modifier = modifier.width(20.dp))
-
-                        Button(
-                            onClick = {
-                                showDialog = true
-                                      },
-                            shape = RoundedCornerShape(5.dp),
-                            modifier = modifier
-                                .width(160.dp)
-                                .height(70.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.home_icon_team_tr),
-                                contentDescription = null,
-                                modifier = Modifier.size(45.dp),
-                                tint = Color.Black
-                            )
-                            Spacer(modifier = modifier.width(8.dp))
-
-                            Text(
-                                text = "Group",
-                                fontSize = 15.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                         if (showDialog) {
-                                            AlertDialog(
-                                                onDismissRequest = { showDialog = false },
-                                                confirmButton = {
-                                                    Button(onClick = { showDialog = false }) {
-                                                        Text("Close")
-                                                    }
-                                                },
-                                                title = {
-                                                    Text("Groups")
-                                                },
-                                                text = {
-                                                    if (groups.isEmpty()) {
-                                                        Text("No groups available")
-                                                    } else {
-                                                        LazyColumn {
-                                                            items(groups) { group ->
-                                                                Row(
-                                                                    verticalAlignment = Alignment.CenterVertically,
-                                                                    modifier = Modifier.padding(vertical = 4.dp)
-                                                                ) {
-                                                                    RadioButton(
-                                                                        selected = selectedGroup == group,
-                                                                        onClick = {
-                                                                            selectedGroup = group
-                                                                            GroupSe = selectedGroup!!.GroupeNumber
-                                                                        }
-                                                                    )
-                                                                    Text(
-                                                                        text = "Group ${group.GroupeNumber}",
-                                                                        modifier = Modifier.padding(start = 8.dp)
-                                                                    )
-
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            )
-                                        }
-
-
-                                    }
-                                }
-                            }
-
-                        }
-                    }
                 }
+                Button(onClick = { /*TODO*/ },modifier = modifier.padding(bottom = 20.dp)) {
+                    Row() {
+                        Icon(
+                            painter = painterResource(R.drawable.save_24dp), // Ensure correct path
+                            contentDescription = "Save attendance", // Add content description
+                            tint = Color.Black
+                        )
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Text(text = "Save attendance")
+                    }
+
+                }
+            }
+        }
+
+    }
+}
