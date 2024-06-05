@@ -3,6 +3,7 @@ package com.example.attendanceapp
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,10 +44,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -85,13 +88,16 @@ import com.example.attendanceapp.DataBase.Students
 
     val context = LocalContext.current
 
+    var selectedStudent by remember { mutableStateOf<Students?>(null) }
+    val openLongPressDialog = remember { mutableStateOf(false) }
+
 
     Scaffold(
         topBar = { TopAppBar("Manage Group ")}
     ) { innerPadding ->
         Box(
             modifier = Modifier
-                .size(600.dp)
+                .size(635.dp)
                 .fillMaxSize()
                 .run {
                     fillMaxSize()
@@ -148,9 +154,17 @@ import com.example.attendanceapp.DataBase.Students
                         contentPadding = PaddingValues(16.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        items(filteredStudents){
+                        items(filteredStudents){student->
                             Card(
                                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                                modifier = Modifier.pointerInput(Unit) {
+                                    detectTapGestures(
+                                        onLongPress = {
+                                            selectedStudent = student
+                                            openLongPressDialog.value = true
+                                        }
+                                    )
+                                }
                             ) {
                                 androidx.compose.material3.ListItem(headlineContent = {
                                     Row(
@@ -158,7 +172,7 @@ import com.example.attendanceapp.DataBase.Students
                                         horizontalArrangement = Arrangement.Center
                                     ) {
                                         Text(
-                                            text = it.studentName,
+                                            text = student.studentName,
                                             fontSize = 17.sp,
                                             modifier = Modifier
                                                 .padding(14.dp)
@@ -204,7 +218,7 @@ import com.example.attendanceapp.DataBase.Students
                                                         Button(
                                                             onClick = {
                                                                 // Delete the group
-                                                                viewModel.delete(it)
+                                                                viewModel.delete(student)
                                                                 openDeleteDialog.value = false
                                                                 Toast.makeText(
                                                                     context,
@@ -232,9 +246,69 @@ import com.example.attendanceapp.DataBase.Students
                                 })
                             }
                         }
+
                     }
                 }
             }
+        }
+        if (openLongPressDialog.value && selectedStudent != null) {
+            var newStudentName by remember { mutableStateOf(selectedStudent?.studentName ?: "") }
+
+            AlertDialog(
+                onDismissRequest = { openLongPressDialog.value = false },
+                confirmButton = {
+                    Button(onClick = {
+                        selectedStudent?.let { student ->
+                            viewModel.update(
+                                Students(
+                                    StudentID = student.StudentID,
+                                    studentName = newStudentName,
+                                    groupeId = student.groupeId
+                                )
+                            )
+                            openLongPressDialog.value=false
+                            Toast.makeText(
+                                context,
+                                "Student name updated successfully",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }, enabled = newStudentName.isNotEmpty()
+                    ) {
+                        Text(text = "Update")
+                    }
+                },
+                dismissButton = {
+                    Button(onClick = {
+                        openLongPressDialog.value = false
+                    }) {
+                        Text(text = "Cancel")
+                    }
+                },
+                title = {
+                    Text(
+                        text = "Change Student Name",
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
+                        modifier = modifier
+                            .padding(top = 15.dp)
+                            .fillMaxWidth(),
+                        color = Color.Black
+                    )
+                },
+                text = {
+                    TextField(
+                        value = newStudentName,
+                        onValueChange = { newStudentName = it },
+                        label = {
+                            Text(text = "New Student Name")
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text
+                        )
+                    )
+                }
+            )
         }
         if(openDiloge.value){
             AlertDialog(
@@ -359,7 +433,7 @@ import com.example.attendanceapp.DataBase.Students
                     modifier = Modifier
                         .fillMaxWidth()
                 )
-                Spacer(modifier = modifier.height(20.dp))
+                Spacer(modifier = modifier.height(0.dp))
                 Row(modifier = modifier
 
                     .fillMaxWidth()) {

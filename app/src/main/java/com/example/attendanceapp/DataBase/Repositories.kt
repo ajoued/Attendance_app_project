@@ -13,6 +13,10 @@ class APPRepository(private val APPDao: AttendanceAppDatabase) {
         APPDao.APPDao().deleteGroup(group)
     }
 
+    suspend fun update(group: Groups) {
+        APPDao.APPDao().update(group)
+    }
+
     fun readAllGroup () : Flow<List<Groups>> = APPDao.APPDao().readAllDataGroup()
     fun reaAllGroupNotOrdred(): LiveData<List<Groups>> = APPDao.APPDao().getAllGroupsNotOrdred()
 
@@ -29,6 +33,10 @@ class APPRepository(private val APPDao: AttendanceAppDatabase) {
     }
     fun getAllStudents(): LiveData<List<Students>> = APPDao.APPDao().getAllStudents()
 
+
+    suspend fun update(student: Students) {
+        APPDao.APPDao().update(student)
+    }
 
     suspend fun searchStudentsByName(name: String): List<Students> {
         return APPDao.APPDao().getStudentsByName(name)

@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 
@@ -12,6 +13,9 @@ import kotlinx.coroutines.flow.Flow
 interface APPDao {
     @Insert
     suspend fun insertStudent(student: Students)
+
+    @Update
+    suspend fun update(student: Students)
 
     // Remove student
     @Delete
@@ -28,6 +32,8 @@ interface APPDao {
     // Insert group
     @Insert
     suspend fun insertGroup(group: Groups)
+    @Update
+    suspend fun update(group: Groups)
 
     // Remove group
     @Delete

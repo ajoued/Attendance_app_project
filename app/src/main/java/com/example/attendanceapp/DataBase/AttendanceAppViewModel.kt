@@ -15,6 +15,10 @@ class AppViewModel(val repository: APPRepository) : ViewModel() {
         repository.insert(student)
     }
 
+    fun update(student: Students) = viewModelScope.launch {
+        repository.update(student)
+    }
+
     fun delete(student: Students) = viewModelScope.launch {
         repository.delete(student)
     }
@@ -42,6 +46,10 @@ class AppViewModel(val repository: APPRepository) : ViewModel() {
     val selectedGroup = MutableStateFlow<Groups?>(null)
     fun insert(group: Groups) = viewModelScope.launch {
         repository.insert(group)
+    }
+
+    fun update(group: Groups) = viewModelScope.launch {
+        repository.update(group)
     }
 
     fun delete(group: Groups) = viewModelScope.launch {
