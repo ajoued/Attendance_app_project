@@ -2,6 +2,7 @@ package com.example.attendanceapp
 
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -43,6 +46,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -97,89 +101,136 @@ import com.example.attendanceapp.DataBase.Students
                 } ,
             contentAlignment = Alignment.TopCenter
         ) {
-            if (Students.isEmpty()) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier
-                        .padding(16.dp))
-                {
-                    Text(text = "no student available")
+            Column() {
+                Row(
+                    modifier.padding(start = 10.dp, top = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.person_search_24dp),
+                        contentDescription = null,
+                        modifier = Modifier.size(50.dp),
+                        tint = Color.Black
+                    )
+                    TextField(
+                        value = studentName.value,
+                        onValueChange = { studentName.value = it },
+                        label = { Text("Search Student") },
+                        modifier = Modifier
+                            .width(290.dp)
+                            .background(color = Color(0xFFF3FBFF)),
+                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(onDone = { /* handle action */ })
+                    )
+
+
                 }
-            }else{
-                LazyColumn (contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)){
-                    items(Students){
-                        Card(
-                            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                        ) {
-                            androidx.compose.material3.ListItem(headlineContent = {
-                                Row (
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.Center
-                                ){
-                                    Text(
-                                        text = it.studentName,
-                                        fontSize = 17.sp,
-                                        modifier= Modifier.padding(14.dp).width(220.dp)
-                                    )
+                val filteredStudents = if (studentName.value.isEmpty()) {
+                    Students
+                } else {
+                    Students.filter { it.studentName.contains(studentName.value, ignoreCase = true) }
+                }
 
-                                    Spacer(modifier = modifier.width(20.dp))
-
-                                    IconButton(onClick = {
-                                        openDeleteDialog.value = true
-                                    }) {
-                                        Icon(
-                                            painter = painterResource(id = R.drawable.delete_24dp) ,
-                                            contentDescription = null,
-                                            modifier = Modifier.size(50.dp),
-                                            tint = Color.Black
+                Spacer(modifier = modifier.height(10.dp))
+                if (filteredStudents.isEmpty()) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        modifier = Modifier
+                            .padding(16.dp)
+                    )
+                    {
+                        Text(text = "no student available")
+                    }
+                } else {
+                    LazyColumn(
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        items(filteredStudents){
+                            Card(
+                                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                            ) {
+                                androidx.compose.material3.ListItem(headlineContent = {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.Center
+                                    ) {
+                                        Text(
+                                            text = it.studentName,
+                                            fontSize = 17.sp,
+                                            modifier = Modifier
+                                                .padding(14.dp)
+                                                .width(220.dp)
                                         )
-                                        if (openDeleteDialog.value) {
-                                            AlertDialog(
-                                                onDismissRequest = { openDeleteDialog.value = false },
-                                                title = {
-                                                    Text(
-                                                        text = "Delete Student",
-                                                        textAlign = TextAlign.Center,
-                                                        fontWeight = FontWeight.Bold,
-                                                        modifier = Modifier.padding(top = 15.dp).fillMaxWidth(),
-                                                        color = Color.Black
-                                                    )
-                                                },
-                                                text = {
-                                                    Text(
-                                                        text = "Are you sure you want to delete this student?",
-                                                        textAlign = TextAlign.Center,
-                                                        modifier = Modifier.fillMaxWidth(),
-                                                        color = Color.Black
-                                                    )
-                                                },
-                                                confirmButton = {
-                                                    Button(
-                                                        onClick = {
-                                                            // Delete the group
-                                                            viewModel.delete(it)
-                                                            openDeleteDialog.value = false
-                                                            Toast.makeText(context,  "Student removed successfully", Toast.LENGTH_SHORT). show( )
-                                                        }
-                                                    ) {
-                                                        Text("Yes")
-                                                    }
-                                                },
-                                                dismissButton = {
-                                                    Button(
-                                                        onClick = {
-                                                            openDeleteDialog.value = false
-                                                        }
-                                                    ) {
-                                                        Text("No")
-                                                    }
-                                                }
+
+                                        Spacer(modifier = modifier.width(20.dp))
+
+                                        IconButton(onClick = {
+                                            openDeleteDialog.value = true
+                                        }) {
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.delete_24dp),
+                                                contentDescription = null,
+                                                modifier = Modifier.size(50.dp),
+                                                tint = Color.Black
                                             )
+                                            if (openDeleteDialog.value) {
+                                                AlertDialog(
+                                                    onDismissRequest = {
+                                                        openDeleteDialog.value = false
+                                                    },
+                                                    title = {
+                                                        Text(
+                                                            text = "Delete Student",
+                                                            textAlign = TextAlign.Center,
+                                                            fontWeight = FontWeight.Bold,
+                                                            modifier = Modifier
+                                                                .padding(top = 15.dp)
+                                                                .fillMaxWidth(),
+                                                            color = Color.Black
+                                                        )
+                                                    },
+                                                    text = {
+                                                        Text(
+                                                            text = "Are you sure you want to delete this student?",
+                                                            textAlign = TextAlign.Center,
+                                                            modifier = Modifier.fillMaxWidth(),
+                                                            color = Color.Black
+                                                        )
+                                                    },
+                                                    confirmButton = {
+                                                        Button(
+                                                            onClick = {
+                                                                // Delete the group
+                                                                viewModel.delete(it)
+                                                                openDeleteDialog.value = false
+                                                                Toast.makeText(
+                                                                    context,
+                                                                    "Student removed successfully",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+                                                        ) {
+                                                            Text("Yes")
+                                                        }
+                                                    },
+                                                    dismissButton = {
+                                                        Button(
+                                                            onClick = {
+                                                                openDeleteDialog.value = false
+                                                            }
+                                                        ) {
+                                                            Text("No")
+                                                        }
+                                                    }
+                                                )
+                                            }
                                         }
                                     }
-                                }
-                            })
+                                })
+                            }
                         }
                     }
                 }
