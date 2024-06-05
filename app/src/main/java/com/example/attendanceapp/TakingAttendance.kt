@@ -277,12 +277,16 @@ fun TakeAttnn(navController : NavHostController, viewModel : AppViewModel, modif
             ) {
                 Column (modifier = modifier.padding(bottom = 70.dp)){
                     Row() {
-                        Text(text = "Date selected : $selectedDate")
+                        if (selectedDate.isNotEmpty()) {
+                            Text(text = "Date : $selectedDate")
+                        }else{
+                            Text(text = "Date : ../../....")
+                        }
                         Spacer(modifier = modifier.width(20.dp))
                         if (selectedGroup != null) {
-                            Text(text = "Group selected : $GroupSe")
+                            Text(text = "Group : $GroupSe")
                         } else {
-                            Text(text = "Group : ")
+                            Text(text = "Group : ...... ")
                         }
                     }
                 }
