@@ -109,7 +109,7 @@ import com.example.attendanceapp.DataBase.Students
         ) {
             Column() {
                 Row(
-                    modifier.padding(start = 10.dp, top = 10.dp),
+                    modifier.padding(start = 10.dp, top = 5.dp).height(50.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
@@ -411,7 +411,7 @@ import com.example.attendanceapp.DataBase.Students
 
 
 
-        Spacer(modifier = modifier.height(20.dp))
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -421,7 +421,7 @@ import com.example.attendanceapp.DataBase.Students
                             innerPadding
                         )
                 }
-                .fillMaxWidth(),
+                .fillMaxWidth().height(70.dp),
             contentAlignment = Alignment.BottomCenter
         ){
             Column {
@@ -433,10 +433,7 @@ import com.example.attendanceapp.DataBase.Students
                     modifier = Modifier
                         .fillMaxWidth()
                 )
-                Spacer(modifier = modifier.height(0.dp))
-                Row(modifier = modifier
-
-                    .fillMaxWidth()) {
+                Row(modifier = modifier.fillMaxWidth()) {
                     Button(
                         onClick = {
                             openDiloge.value=true
@@ -444,8 +441,8 @@ import com.example.attendanceapp.DataBase.Students
                         shape = RoundedCornerShape(5.dp) ,
                         modifier = modifier
                             .fillMaxWidth()
-                            .height(100.dp)
-                            .padding(20.dp)
+                            .height(80.dp)
+                            .padding(top = 5.dp, start = 20.dp, end = 20.dp,bottom = 20.dp)
 
                     ) {
                         Icon(

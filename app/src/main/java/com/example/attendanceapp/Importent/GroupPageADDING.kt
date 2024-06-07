@@ -7,7 +7,6 @@ import androidx.navigation.NavHostController
 import com.example.attendanceapp.DataBase.APPRepository
 import com.example.attendanceapp.DataBase.AppViewModel
 import com.example.attendanceapp.DataBase.AttendanceAppDatabase
-import com.example.attendanceapp.HistorySessionn
 import com.example.attendanceapp.MangeGrr
 
 @Composable

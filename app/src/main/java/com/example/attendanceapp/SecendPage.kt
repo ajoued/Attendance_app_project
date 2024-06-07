@@ -221,7 +221,7 @@ fun MangeGrr(navController: NavHostController, viewModel: AppViewModel, modifier
                         } else {
                             Toast.makeText(
                                 context,
-                                "Group number already exists",
+                                "Group already exists",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -333,7 +333,7 @@ fun MangeGrr(navController: NavHostController, viewModel: AppViewModel, modifier
                     fillMaxSize()
                         .padding(innerPadding)
                 }
-                .fillMaxWidth(),
+                .fillMaxWidth().height(70.dp),
             contentAlignment = Alignment.BottomCenter
         ) {
             Column {
@@ -352,8 +352,8 @@ fun MangeGrr(navController: NavHostController, viewModel: AppViewModel, modifier
                     shape = RoundedCornerShape(5.dp),
                     modifier = modifier
                         .fillMaxWidth()
-                        .height(100.dp)
-                        .padding(20.dp)
+                        .height(80.dp)
+                        .padding(top = 5.dp, start = 20.dp, end = 20.dp,bottom = 20.dp)
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.group_add_fill0_wght400_grad0_opsz24),
