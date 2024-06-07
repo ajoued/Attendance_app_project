@@ -42,16 +42,36 @@ class APPRepository(private val APPDao: AttendanceAppDatabase) {
         return APPDao.APPDao().getStudentsByName(name)
     }
 
+
+
+
+
     fun readAllAttendence () : Flow<List<Attendance>> = APPDao.APPDao().readAllDataAttendance()
-
-    suspend fun add(attendance: Attendance) {
-        APPDao.APPDao().addAttendance(attendance)
-    }
-    suspend fun remove(attendance: Attendance){
-        APPDao.APPDao().removeAttendance(attendance)
-    }
-
     fun getAllDates(): LiveData<List<String>> {
         return APPDao.APPDao().getAllDates()
+    }
+
+    suspend fun insert(attendance: Attendance) {
+        APPDao.APPDao().insert(attendance)
+    }
+
+    suspend fun update(attendance: Attendance) {
+        APPDao.APPDao().update(attendance)
+    }
+
+    suspend fun delete(attendance: Attendance) {
+        APPDao.APPDao().delete(attendance)
+    }
+
+    fun getAttendanceForStudent(studentId: Int): LiveData<List<Attendance>> {
+        return APPDao.APPDao().getAttendanceForStudent(studentId)
+    }
+
+    fun getAllAttendance(): LiveData<List<Attendance>> {
+        return APPDao.APPDao().getAllAttendance()
+    }
+
+    suspend fun getAttendanceByDate(studentId: Int, date: String): Attendance? {
+        return APPDao.APPDao().getAttendanceByDate(studentId, date)
     }
 }

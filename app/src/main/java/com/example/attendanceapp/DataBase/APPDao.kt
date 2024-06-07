@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
@@ -44,14 +45,9 @@ interface APPDao {
     @Query("SELECT * FROM Groups ORDER BY GroupeId ASC")
     fun readAllDataGroup(): Flow<List<Groups>>
 
+
+
     // Add attendance
-    @Insert
-    suspend fun addAttendance(attendance: Attendance)
-
-    // Remove attendance
-    @Delete
-    suspend fun removeAttendance(attendance: Attendance)
-
 
     @Query("SELECT * FROM Attendance ORDER BY attendanceId ASC")
     fun readAllDataAttendance(): Flow<List<Attendance>>
@@ -59,4 +55,25 @@ interface APPDao {
 
     @Query("SELECT date FROM Attendance")
     fun getAllDates(): LiveData<List<String>>
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(attendance: Attendance)
+
+    @Update
+    suspend fun update(attendance: Attendance)
+
+    @Delete
+    suspend fun delete(attendance: Attendance)
+
+    @Query("SELECT * FROM Attendance WHERE studentId = :studentId AND date = :date")
+    suspend fun getAttendanceByDate(studentId: Int, date: String): Attendance?
+
+    @Query("SELECT * FROM Attendance WHERE studentId = :studentId")
+    fun getAttendanceForStudent(studentId: Int): LiveData<List<Attendance>>
+
+    @Query("SELECT * FROM Attendance")
+    fun getAllAttendance(): LiveData<List<Attendance>>
+
+
 }

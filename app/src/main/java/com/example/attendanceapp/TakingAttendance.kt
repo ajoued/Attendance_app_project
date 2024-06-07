@@ -3,6 +3,7 @@ package com.example.attendanceapp
 
 import android.app.DatePickerDialog
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +21,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -37,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -52,9 +53,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.attendanceapp.DataBase.AppViewModel
+import com.example.attendanceapp.DataBase.Attendance
 import com.example.attendanceapp.DataBase.Groups
 import com.example.attendanceapp.ui.theme.AttendanceAppTheme
 import java.util.Calendar
+import androidx.compose.material3.AlertDialog as AlertDialog
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -87,6 +90,13 @@ fun TakeAttnn(navController : NavHostController, viewModel : AppViewModel, modif
         }, year, month, day
     )
 
+    val attendanceState = remember { mutableStateMapOf<Int, Boolean>().apply {
+        Students.forEach { student ->
+            this[student.StudentID] = false
+        }
+    } }
+
+    var showDialog2 by remember { mutableStateOf(false) }
 
 
     Scaffold(
@@ -94,14 +104,11 @@ fun TakeAttnn(navController : NavHostController, viewModel : AppViewModel, modif
             Row(modifier = Modifier.fillMaxWidth()) {
                 TopAppBar("Take Attendance")
             }
-        },
-        bottomBar = {
-
         }
     ) { innerPadding ->
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .size(635.dp)
                 .run {
                     fillMaxSize()
                         .padding(
@@ -151,7 +158,8 @@ fun TakeAttnn(navController : NavHostController, viewModel : AppViewModel, modif
                         shape = RoundedCornerShape(5.dp),
                         modifier = modifier
                             .width(160.dp)
-                            .height(70.dp)
+                            .height(70.dp),
+
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.home_icon_team_tr),
@@ -222,17 +230,20 @@ fun TakeAttnn(navController : NavHostController, viewModel : AppViewModel, modif
                     ) {
 
                         items(Students) {
-                            val cardIndex = Students.indexOf(it)
-                            var icon by remember {
-                                mutableStateOf(uncheckedIcon)
-                            }
+                            var isPresent by remember { mutableStateOf(false) }
+
                             Card(
                                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
-                                        icon =
-                                            if (icon == uncheckedIcon) checkedIcon else uncheckedIcon
+                                        if (isPresent) {
+                                            isPresent = !isPresent
+                                            attendanceState[it.StudentID] = isPresent
+                                        } else {
+                                            isPresent = !isPresent
+                                            attendanceState[it.StudentID] = isPresent
+                                        }
                                     }
                             ) {
                                 ListItem(headlineContent = {
@@ -248,60 +259,84 @@ fun TakeAttnn(navController : NavHostController, viewModel : AppViewModel, modif
                                                 .width(220.dp)
                                         )
                                         Spacer(modifier = modifier.width(20.dp))
-                                        Icon(
-                                            painter = icon,
-                                            contentDescription = "Toggle Icon",
-                                            modifier = Modifier.size(24.dp)
-                                        )
+                                        if (isPresent)
+                                            Text("P")
+                                        else
+                                            Text("A")
+
+
                                     }
                                 })
                             }
                         }
 
                     }
+
                 }
             }
 
-            Spacer(modifier = modifier.height(20.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .run {
-                        fillMaxSize()
-                            .padding(
-                                innerPadding
-                            )
-                    }
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.BottomCenter
-            ) {
-                Column (modifier = modifier.padding(bottom = 70.dp)){
-                    Row() {
-                        if (selectedDate.isNotEmpty()) {
-                            Text(text = "Date : $selectedDate")
-                        }else{
-                            Text(text = "Date : ../../....")
-                        }
-                        Spacer(modifier = modifier.width(20.dp))
-                        if (selectedGroup != null) {
-                            Text(text = "Group : $GroupSe")
-                        } else {
-                            Text(text = "Group : ...... ")
-                        }
-                    }
-                }
-                Button(onClick = { /*TODO*/ },modifier = modifier.padding(bottom = 20.dp)) {
-                    Row() {
-                        Icon(
-                            painter = painterResource(R.drawable.save_24dp), // Ensure correct path
-                            contentDescription = "Save attendance", // Add content description
-                            tint = Color.Black
-                        )
-                        Spacer(modifier = Modifier.width(5.dp))
-                        Text(text = "Save attendance")
-                    }
 
+        }
+
+        Spacer(modifier = modifier.height(20.dp))
+        Box(
+            modifier = Modifier
+                .padding(top = 100.dp)
+                .fillMaxWidth()
+                .run {
+                    fillMaxSize()
+                        .padding(innerPadding)
                 }
+                .fillMaxWidth()
+                .height(70.dp),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            Column(Modifier.padding(bottom = 70.dp)) {
+                Row() {
+                    if (selectedDate.isNotEmpty()) {
+                        Text(text = "Date : $selectedDate")
+                    }else{
+                        Text(text = "Date : ../../....")
+                    }
+                    Spacer(modifier = modifier.width(20.dp))
+                    if (selectedGroup != null) {
+                        Text(text = "Group : $GroupSe")
+                    } else {
+                        Text(text = "Group : ...... ")
+                    }
+                }
+            }
+            Button(
+                onClick = {
+                    if (selectedGroup != null && selectedDate.isNotEmpty()) {
+                        Students.forEach { student ->
+                            val isPresent = attendanceState[student.StudentID] ?: false
+                            val attendance = Attendance(
+                                attendanceId = 0,
+                                date = selectedDate,
+                                isPresent = isPresent,
+                                studentId = student.StudentID
+                            )
+                            viewModel.insert(attendance)
+                        }
+                    }
+                    Toast.makeText(
+                        context,
+                        "Saved",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                },Modifier.padding(bottom = 20.dp)
+            ) {
+                Row() {
+                    Icon(
+                        painter = painterResource(R.drawable.save_24dp), // Ensure correct path
+                        contentDescription = "Save attendance", // Add content description
+                        tint = Color.Black
+                    )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Text(text = "Save attendance")
+                }
+
             }
         }
 

@@ -50,6 +50,7 @@ fun HistorySessionn(navController : NavHostController,viewModel : AppViewModel ,
     val dates by viewModel.getAllDates().observeAsState(initial = emptyList())
     var expandedd by remember { mutableStateOf(false) }
     var textFieldValuee by remember { mutableStateOf(TextFieldValue("")) }
+    var selectedDate by remember { mutableStateOf<String?>(null) }
 
     Scaffold(
         topBar = { TopAppBar("History per session") }

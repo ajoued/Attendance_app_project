@@ -2,8 +2,10 @@ package com.example.attendanceapp.DataBase
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 class AppViewModel(val repository: APPRepository) : ViewModel() {
@@ -68,15 +70,27 @@ class AppViewModel(val repository: APPRepository) : ViewModel() {
 
 
     //Attendenc
-    val attendancee =repository.readAllAttendence()
+    val attendancee =repository.getAllAttendance()
 
-    fun addd(attendance: Attendance) = viewModelScope.launch {
-        repository.add(attendance)
-    }
-    fun remove(attendance: Attendance) = viewModelScope.launch {
-        repository.remove(attendance)
+    private val _attendanceByDate = MutableLiveData<Attendance?>()
+    val attendanceByDate: LiveData<Attendance?> get() = _attendanceByDate
+
+    fun getAttendanceByDate(studentId: Int, date: String) = viewModelScope.launch(Dispatchers.IO) {
+        val attendance = repository.getAttendanceByDate(studentId, date)
+        _attendanceByDate.postValue(attendance)
     }
 
+    fun insert(attendance: Attendance) = viewModelScope.launch(Dispatchers.IO) {
+        repository.insert(attendance)
+    }
+
+    fun update(attendance: Attendance) = viewModelScope.launch(Dispatchers.IO) {
+        repository.update(attendance)
+    }
+
+    fun delete(attendance: Attendance) = viewModelScope.launch(Dispatchers.IO) {
+        repository.delete(attendance)
+    }
 
     fun getAllDates(): LiveData<List<String>> {
         return repository.getAllDates()

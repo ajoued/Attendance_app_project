@@ -31,9 +31,19 @@ data class Students(
 
 
 
-@Entity(tableName = "Attendance")
+@Entity(tableName = "Attendance",
+    foreignKeys = [ForeignKey(
+        entity = Students::class,
+        parentColumns = ["StudentID"],
+        childColumns = ["studentId"],
+        onDelete = ForeignKey.CASCADE
+    )],
+    indices = [Index(value = ["studentId"])]
+)
 data class Attendance(
     @PrimaryKey(autoGenerate = true) val attendanceId: Int,
-    val date : String
+    val isPresent: Boolean,
+    val date: String,
+    val studentId: Int
 )
 

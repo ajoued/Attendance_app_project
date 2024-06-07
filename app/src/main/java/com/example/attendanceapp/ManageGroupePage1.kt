@@ -2,6 +2,7 @@ package com.example.attendanceapp
 
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -108,29 +109,35 @@ import com.example.attendanceapp.DataBase.Students
             contentAlignment = Alignment.TopCenter
         ) {
             Column() {
+                var showSearch by remember { mutableStateOf(false) }
                 Row(
                     modifier.padding(start = 10.dp, top = 5.dp).height(50.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Icon(
-                        painter = painterResource(R.drawable.person_search_24dp),
-                        contentDescription = null,
-                        modifier = Modifier.size(50.dp),
-                        tint = Color.Black
-                    )
-                    TextField(
-                        value = studentName.value,
-                        onValueChange = { studentName.value = it },
-                        label = { Text("Search Student") },
-                        modifier = Modifier
-                            .width(290.dp)
-                            .background(color = Color(0xFFF3FBFF)),
-                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                        keyboardActions = KeyboardActions(onDone = { /* handle action */ })
-                    )
-
-
+                    IconButton(
+                        onClick = { showSearch = !showSearch },
+                        modifier = Modifier.size(50.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.person_search_24dp),
+                            contentDescription = null,
+                            modifier = Modifier.size(50.dp),
+                            tint = Color.Black
+                        )
+                    }
+                    AnimatedVisibility(visible = showSearch) {
+                        TextField(
+                            value = studentName.value,
+                            onValueChange = { studentName.value = it },
+                            label = { Text("Search Student") },
+                            modifier = Modifier
+                                .width(290.dp)
+                                .background(color = Color(0xFFF3FBFF)),
+                            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                            keyboardActions = KeyboardActions(onDone = { /* handle action */ })
+                        )
+                    }
                 }
                 val filteredStudents = if (studentName.value.isEmpty()) {
                     Students
